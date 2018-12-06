@@ -32,7 +32,7 @@ public class OSCManager : SingletonMonoBehaviour<OSCManager>
     int targetPort = 7000,
         receiverPort = 10000;
 
-    private void Awake()
+    protected override void Awake()
     {
 
         base.Awake();
