@@ -6,8 +6,13 @@ using UnityOSC;
 public class OSCFilterSample : OSCFilter
 {
 
-    public override void OnReceivedOSC(object value)
+    public override void OnReceivedOSC(OSCMessage message)
     {
-        Debug.Log(value.ToString());
+        
+        foreach(var msg in message.Data)
+        {
+            Debug.Log(msg.ToString());
+        }
+
     }
 }

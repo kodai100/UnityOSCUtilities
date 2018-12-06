@@ -8,7 +8,7 @@ public interface IOSCReceivable
     void OnReceivedOSC(OSCMessage message);
 }
 
-public class OSCFilterManager : SingletonMonoBehaviour<OSCFilterManager>, IOSCReceivable{
+public class OSCFilterManager : IOSCReceivable{
 
     [HideInInspector] public List<OSCFilter> Filters = new List<OSCFilter>();
 
@@ -17,13 +17,9 @@ public class OSCFilterManager : SingletonMonoBehaviour<OSCFilterManager>, IOSCRe
 
         foreach (var filter in Filters){
             
-            if(filter.OSCAddress == message.Address)
+            if (filter.OSCAddress == message.Address)
             {
-                foreach (var data in message.Data)
-                {
-                    filter.OnReceivedOSC(data);
-                }
-
+                filter.OnReceivedOSC(message);
             }
         }
     }

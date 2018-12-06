@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 
 public class OSCSender
 {
@@ -18,5 +19,13 @@ public class OSCSender
             return;
 
         OSCHandler.Instance.SendMessageToClient(m_clientId, address, value);
+    }
+
+    public void Send<T>(string address, List<T> values)
+    {
+        if (m_isInit == false)
+            return;
+
+        OSCHandler.Instance.SendMessageToClient(m_clientId, address, values);
     }
 }

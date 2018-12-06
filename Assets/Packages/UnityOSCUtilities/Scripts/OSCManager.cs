@@ -21,7 +21,7 @@ public class OSCManager : SingletonMonoBehaviour<OSCManager>
 
     OSCReceiver receiver;
     OSCSender sender;
-    OSCFilterManager filterManager;
+    public OSCFilterManager FilterManager;
 
     [SerializeField]
     string  senderId = "",
@@ -37,7 +37,7 @@ public class OSCManager : SingletonMonoBehaviour<OSCManager>
 
         base.Awake();
 
-        filterManager = GetComponent<OSCFilterManager>();
+        FilterManager = new OSCFilterManager();
 
         switch (mode)
         {
@@ -45,25 +45,11 @@ public class OSCManager : SingletonMonoBehaviour<OSCManager>
                 sender = CreateSender(senderId, IPAddress.Parse(targetIp), targetPort);
                 break;
             case OSCMode.Receive:
-                if (filterManager)
-                {
-                    receiver = CreateReceiver(receiverId, receiverPort, filterManager.OnReceivedOSC);
-                }
-                else
-                {
-                    receiver = CreateReceiver(receiverId, receiverPort, OnReceivedOSC);
-                }
+                receiver = CreateReceiver(receiverId, receiverPort, FilterManager.OnReceivedOSC);
                 break;
             case OSCMode.SendAndReceive:
                 sender = CreateSender(senderId, IPAddress.Parse(targetIp), targetPort);
-                if (filterManager)
-                {
-                    receiver = CreateReceiver(receiverId, receiverPort, filterManager.OnReceivedOSC);
-                }
-                else
-                {
-                    receiver = CreateReceiver(receiverId, receiverPort, OnReceivedOSC);
-                }
+                receiver = CreateReceiver(receiverId, receiverPort, FilterManager.OnReceivedOSC);
                 break;
             default:
                 break;
@@ -89,11 +75,19 @@ public class OSCManager : SingletonMonoBehaviour<OSCManager>
 
     public void SendOSC<T>(string address, T value)
     {
-        sender.Send(address, value);
+        if (mode != OSCMode.Receive)
+            sender.Send(address, value);
+    }
+
+    public void SendOSC<T>(string address, List<T> values)
+    {
+        if(mode != OSCMode.Receive)
+            sender.Send(address, values);
     }
 
     void Update()
     {
-        receiver.Listen();
+        if(mode != OSCMode.Send)
+            receiver.Listen();
     }
 }

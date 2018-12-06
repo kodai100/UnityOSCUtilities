@@ -10,10 +10,10 @@ public abstract class OSCFilter : MonoBehaviour {
     public string FilterName = "";
     public string OSCAddress = "";
     
-    void Start()
+    protected virtual void Start()
     {
-        OSCFilterManager.Instance.Filters.Add(this);
+        OSCManager.Instance.FilterManager.Filters.Add(this);
     }
 
-    public abstract void OnReceivedOSC(object obj);
+    public abstract void OnReceivedOSC(OSCMessage message);
 }
