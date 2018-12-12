@@ -22,7 +22,7 @@ public class OSCManager : SingletonMonoBehaviour<OSCManager>
     OSCReceiver receiver;
     OSCSender sender;
     public OSCFilterManager FilterManager;
-
+    
     [SerializeField]
     string  senderId = "",
             receiverId = "",

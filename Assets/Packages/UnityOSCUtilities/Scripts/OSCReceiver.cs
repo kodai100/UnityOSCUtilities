@@ -29,12 +29,13 @@ public class OSCReceiver
     void OnPacketReceived(OSCServer server, OSCPacket packet)
     {
         queue.Enqueue(packet);
+
     }
     
 
     public void Listen()
     {
-        ListenToOSCMessage();
+        // ListenToOSCMessage();
     }
 
 
@@ -45,9 +46,9 @@ public class OSCReceiver
         {
 
             OSCPacket packet = queue.Dequeue() as OSCPacket;
+            
             if (packet.IsBundle())
             {
-
                 OSCBundle bundle = packet as OSCBundle;
 
                 foreach (OSCMessage msg in bundle.Data)
